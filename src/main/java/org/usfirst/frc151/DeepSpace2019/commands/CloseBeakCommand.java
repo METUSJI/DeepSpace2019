@@ -1,4 +1,3 @@
-
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -7,13 +6,13 @@
 /*----------------------------------------------------------------------------*/
 
 package org.usfirst.frc151.DeepSpace2019.commands;
+
 import org.usfirst.frc151.DeepSpace2019.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class CloseBeak extends Command {
-  public CloseBeak() {
-    // Use requires() here to declare subsystem dependencies
-    requires(Robot.hatch);
+public class CloseBeakCommand extends Command {
+  public CloseBeakCommand() {
+    requires(Robot.hatchSubsystem);
   }
 
   // Called just before this Command runs the first time
@@ -24,7 +23,7 @@ public class CloseBeak extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.hatch.retractBeak();
+    Robot.hatchSubsystem.closeBeak();
   }
 
 

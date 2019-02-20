@@ -10,11 +10,10 @@ package org.usfirst.frc151.DeepSpace2019.commands;
 import org.usfirst.frc151.DeepSpace2019.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class OpenBeak extends Command {
-
-  public OpenBeak() {
-    // Use requires() here to declare subsystem dependencies
-    requires(Robot.hatch);
+public class SwitchToHatchCamCommand extends Command {
+  
+  public SwitchToHatchCamCommand() {
+    requires(Robot.cameraSubSystem);
   }
 
   // Called just before this Command runs the first time
@@ -25,7 +24,7 @@ public class OpenBeak extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.hatch.extendBeak();
+    Robot.cameraSubSystem.switchCamera(Robot.hatchCamera);
   }
 
   // Make this return true when this Command no longer needs to run execute()

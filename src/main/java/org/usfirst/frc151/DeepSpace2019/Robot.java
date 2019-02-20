@@ -17,32 +17,37 @@ public class Robot extends TimedRobot {
     Command autonomousCommand;
     SendableChooser<Command> chooser = new SendableChooser<>();
 
-    public static OI oi;
-    public static Chassis chassis;
-    public static Cargo cargo;
-    public static Hatch hatch;
-    public static USBCamera usbCam;
-    public static MjpegServer server;
-    public static UsbCamera cam1, cam2;
+    public static DriverOI driverOI;
+    public static CoDriverOI coDriverOI;
+    public static ChassisSubsystem chassisSubsystem;
+    public static CargoClawSubsystem cargoClawSubsystem;
+    public static HatchSubsystem hatchSubsystem;
+    public static MjpegServer cameraSwitchServer = null;
+    public static UsbCamera hatchCamera = null;
+    public static UsbCamera cargoCamera = null;
+    public static UsbCameraSubsystem cameraSubSystem = null;
 
     @Override
     public void robotInit() {
+        chassisSubsystem = new ChassisSubsystem();
+        cargoClawSubsystem = new CargoClawSubsystem();
+        hatchSubsystem = new HatchSubsystem();
+        cameraSubSystem = new UsbCameraSubsystem();
 
-        chassis = new Chassis();
-        cargo = new Cargo();
-        hatch = new Hatch();
-        usbCam = new USBCamera();
-        cam1 = CameraServer.getInstance().startAutomaticCapture(0);
-        cam2 = CameraServer.getInstance().startAutomaticCapture(1);
-        server = new MjpegServer("server", 0);
-        server.setSource(cam1);
+        driverOI = new DriverOI(0);
+        coDriverOI = new CoDriverOI(1);
 
-        oi = new OI(0);
-
-
-        chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
+        chooser.setDefaultOption("Autonomous Command", null);
 
         SmartDashboard.putData("Auto mode", chooser);
+
+        try {
+            hatchCamera = CameraServer.getInstance().startAutomaticCapture("HatchCam", 0);
+            cargoCamera = CameraServer.getInstance().startAutomaticCapture("CargoCam", 1);
+            cameraSwitchServer = CameraServer.getInstance().addSwitchedCamera("switchCam");
+          } catch (Exception e) {
+            System.out.println(e.getMessage());
+          }
     }
 
     /**
@@ -61,7 +66,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        autonomousCommand = chooser.getSelected();        
+        autonomousCommand = chooser.getSelected();
         // schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
     }
@@ -81,8 +86,6 @@ public class Robot extends TimedRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
-
-        hatch.compressorOn();
     }
 
     /**

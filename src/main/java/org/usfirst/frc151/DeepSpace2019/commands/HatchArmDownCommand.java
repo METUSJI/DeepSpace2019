@@ -6,13 +6,13 @@
 /*----------------------------------------------------------------------------*/
 
 package org.usfirst.frc151.DeepSpace2019.commands;
+
 import org.usfirst.frc151.DeepSpace2019.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ExtendHatchArm extends Command {
-  public ExtendHatchArm() {
-    // Use requires() here to declare subsystem dependencies
-    requires(Robot.hatch);
+public class HatchArmDownCommand extends Command {
+  public HatchArmDownCommand() {
+    requires(Robot.hatchSubsystem);
   }
 
   // Called just before this Command runs the first time
@@ -23,7 +23,7 @@ public class ExtendHatchArm extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.hatch.extendArm();
+    Robot.hatchSubsystem.extendArm();
   }
 
 
